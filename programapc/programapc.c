@@ -7,9 +7,14 @@
 
 void config_port(int fd);
 char read_char(int fd);
+int read_int(int fd);
 char caracter;
+void config_port_read(int fd); //lee configuracioes del puerto
 
 void write_port(char dato,int fd);
+
+int entero;
+int numero=56;
 
 int main(void){
     
@@ -20,7 +25,7 @@ int main(void){
 
 /* Change /dev/ttyACM0 to the one corresponding to your system */
 
-   	fd = open("/dev/ttyACM0",O_RDWR | O_NOCTTY | O_NDELAY);	/* ttyUSB0 is the FT232 based USB2SERIAL Converter   */
+   	fd = open("/dev/ttyACM0",O_RDWR | O_NOCTTY );	/* ttyUSB0 is the FT232 based USB2SERIAL Converter   */
 			   					/* O_RDWR   - Read/Write access to serial port       */
 								/* O_NOCTTY - No terminal will control the process   */
 								/* Open in blocking mode,read will wait              */
@@ -30,10 +35,14 @@ int main(void){
    	if(fd == -1)						/* Error Checking */
    	   printf("  Error! in Opening ttyUSB0  \n");
    	else
-   	   printf("\n  ttyUSB0 Opened Successfully ");
+   	   printf("\n  Puerto ttyACM0 Abierto Exitosamente ");
 
 	
 	config_port_read(fd);
+	
+	
+	getchar();
+	system("clear"); //clears the screen
 	
 	
 	
@@ -41,35 +50,46 @@ int main(void){
 	
 	printf("desea escribir en el puerto o escuchar? elija una opcion \n");
 	
+	int alto, bajo;
+	unsigned short int var=0;
+	alto= 0xAA;
+	bajo= 0xBB;
+	alto=alto << 8;
+	var=alto | bajo; 
+	printf("%2x %2x %x",alto, bajo, var);
 	
 	while(op!=3)
 		{
-		printf("\n1- escrbir \n2- escuchar \n3- Salir \n");
-		
+		printf("\n1- escrbir \n2- escuchar \n3- Salir \n4- leer entero \n");
+		//printf("%d",sizeof(int));
 		scanf("%d", &op );
 		
 		if (op==1)
 			scanf(" %c",&caracter);
 		if (op==2)
-			caracter='q';
+			caracter='\0';
 		
 		switch(op)
 			{
 				case 1:
-					write_port(caracter,fd);
-					break;
+						write_port(caracter,fd);
+						break;
 				case 2:
-						while(caracter=='q')   //para que quede escuchando hasta que escucha algo distinto a q
+						while(caracter!='q')   //para que quede escuchando hasta que escucha algo distinto a q
 							{
-							printf("%c", read_char(fd));
+								caracter = read_char(fd);
+							printf("%c\n", caracter);
+							if (caracter=='q')
+								op=0;
 							}
-					break;
-				
-			}
-		
-		}			
-	
-
+						break;
+					
+				case 4:
+						entero = read_int(fd);
+						printf("%x \n", entero);
+						break;
+			}		
+	}			
 	close(fd); /* Close the serial port */
 
 	return 0;
@@ -110,12 +130,12 @@ void config_port_read(int fd){
 	if((tcsetattr(fd,TCSANOW,&SerialPortSettings)) != 0) /* Set the attributes to the termios structure*/
 	    printf("  ERROR ! in Setting attributes\n");
 	else
-        printf("\npuerto abierto \n  BaudRate = 9600 \n  StopBits = 1 \n  Parity   = none");
+        printf("\n  BaudRate = 9600 \n  StopBits = 1 \n  Parity   = none");
 }
 
 char read_char(int fd){
 	        /*------------------------------- Read data from serial port -----------------------------*/
-
+	//static int cont=0;
 	tcflush(fd, TCIFLUSH);   /* Discards old data in the rx buffer            */
 
 	char var;   /* variable to store the data received              */
@@ -124,11 +144,36 @@ char read_char(int fd){
 
 //	bytes_read = read(fd,&read_buffer,32); /* Read the data                   */
 			
+//	printf("%d ", cont++);
 	read(fd,&var,1);
 
 	return var;
 }
 
+ int read_int(int fd){
+	        /*------------------------------- Read data from serial port -----------------------------*/
+	/*static int cont=0;
+	tcflush(fd, TCIFLUSH);   /* Discards old data in the rx buffer            */
+
+	//int var;   /* variable to store the data received              */
+//	int  bytes_read = 0;    /* Number of bytes read by the read() system call */
+//	int i = 0;
+
+//	bytes_read = read(fd,&read_buffer,32); /* Read the data                   */
+			
+	/*//printf("%d ", cont++);
+	read(fd,&var,2);
+	//printf("%d ", read(fd,&var,2));*/
+	int alto, bajo;
+	unsigned short int var=0;
+	alto= read_char(fd);
+	bajo= read_char(fd);
+	alto=alto << 8;
+	var=alto | bajo; 
+	
+	
+	return var;
+}
 void write_port(char dato, int fd){
 
 /*------------------------------- Write data to serial port -----------------------------*/

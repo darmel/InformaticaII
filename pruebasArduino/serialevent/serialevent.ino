@@ -27,8 +27,14 @@ void setup() {
   inputString.reserve(200);
   pinMode(LED_BUILTIN, OUTPUT);
    Serial.println("comienzo");
+   pinMode(8, INPUT);
+   pinMode(9, INPUT);
 }
 int l=0;
+long unsigned int a=1;
+int b1 = 0;
+int b2 = 0;
+int b3 = 0;
 void loop() {
   // print the string when a newline arrives:
      // clear the string:
@@ -39,9 +45,36 @@ void loop() {
       else
       digitalWrite(13, LOW);
 
+    b1 = digitalRead(8);
+    b2 = digitalRead(9);
+    b3 = digitalRead(2);
     
+    if(b1 == HIGH)
+        {
+      delay(40);
+      while(b1==HIGH)
+      b1 = digitalRead(8);
+      Serial.println("a");
+        }
+
     
-  
+    if(b2 == HIGH)
+        {
+      delay(40);
+      while(b2==HIGH)
+      b2 = digitalRead(9);
+      Serial.println("q");
+        }
+        
+    if(b3 == HIGH)
+        {
+      delay(40);
+      while(b3==HIGH)
+      b3 = digitalRead(2);
+      Serial.println(a);
+        }
+    
+    delay(50);
 }
 
 /*
