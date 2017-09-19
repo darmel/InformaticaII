@@ -35,9 +35,12 @@ int main(void){
    	if(fd == -1)						/* Error Checking */
    	   printf("  Error! in Opening ttyUSB0  \n");
    	else
-   	   printf("\n  Puerto ttyACM0 Abierto Exitosamente ");
-
-	
+		{
+			printf("\n +-------------------------------------+");
+			printf("\n | Puerto ttyACM0 Abierto Exitosamente |");
+			printf("\n +-------------------------------------+");
+		}
+		
 	config_port_read(fd);
 	
 	
@@ -45,18 +48,18 @@ int main(void){
 	system("clear"); //clears the screen
 	
 	
+	printf("\n +-------------------------------------+");
+	printf("\n |------Proyecto Informatica 2---------| \n");
+	printf("\n +-------------------------------------+");	
+	printf("Desea escribir en el puerto o escuchar? elija una opcion \n");
 	
-	printf("\n --Proyecto Informatica 2-- \n");
-	
-	printf("desea escribir en el puerto o escuchar? elija una opcion \n");
-	
-	int alto, bajo;
+	/*int alto, bajo;
 	unsigned short int var=0;
 	alto= 0xAA;
 	bajo= 0xBB;
 	alto=alto << 8;
 	var=alto | bajo; 
-	printf("%2x %2x %x",alto, bajo, var);
+	printf("%2x %2x %x",alto, bajo, var);*/
 	
 	while(op!=3)
 		{
@@ -85,8 +88,10 @@ int main(void){
 						break;
 					
 				case 4:
+						while(entero<24){
 						entero = read_int(fd);
-						printf("%x \n", entero);
+						printf("%d \n", entero);
+						}
 						break;
 			}		
 	}			
@@ -152,24 +157,24 @@ char read_char(int fd){
 
  int read_int(int fd){
 	        /*------------------------------- Read data from serial port -----------------------------*/
-	/*static int cont=0;
+	static int cont=0;
 	tcflush(fd, TCIFLUSH);   /* Discards old data in the rx buffer            */
 
-	//int var;   /* variable to store the data received              */
+	int var;   /* variable to store the data received              */
 //	int  bytes_read = 0;    /* Number of bytes read by the read() system call */
 //	int i = 0;
 
 //	bytes_read = read(fd,&read_buffer,32); /* Read the data                   */
 			
-	/*//printf("%d ", cont++);
+	//printf(" antes del read %d \n", var);
 	read(fd,&var,2);
-	//printf("%d ", read(fd,&var,2));*/
-	int alto, bajo;
+	//printf("dentro de la funcion read %d \n ", var);
+	/*int alto, bajo;
 	unsigned short int var=0;
 	alto= read_char(fd);
 	bajo= read_char(fd);
 	alto=alto << 8;
-	var=alto | bajo; 
+	var=alto | bajo; */
 	
 	
 	return var;

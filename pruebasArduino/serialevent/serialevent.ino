@@ -31,7 +31,7 @@ void setup() {
    pinMode(9, INPUT);
 }
 int l=0;
-long unsigned int a=1;
+int a=15;
 int b1 = 0;
 int b2 = 0;
 int b3 = 0;
@@ -71,7 +71,8 @@ void loop() {
       delay(40);
       while(b3==HIGH)
       b3 = digitalRead(2);
-      Serial.println(a);
+      Serial.write(a);
+      a++;
         }
     
     delay(50);
