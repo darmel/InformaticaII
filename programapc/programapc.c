@@ -12,10 +12,12 @@ char caracter;
 void config_port_read(int fd); //lee configuracioes del puerto
 
 void write_port(char dato,int fd);
+void write_port_int(int numero, int fd);
 
+int l; //para contar las veces que se lee
 int entero;
-int numero=56;
-
+int n_enviado=56;
+int n_rec=0;
 int main(void){
     
     int op=0;    	
@@ -36,9 +38,13 @@ int main(void){
    	   printf("  Error! in Opening ttyUSB0  \n");
    	else
 		{
-			printf("\n +-------------------------------------+");
-			printf("\n | Puerto ttyACM0 Abierto Exitosamente |");
-			printf("\n +-------------------------------------+");
+			printf("\n +-------------------------------------+\n");
+			printf(" | Puerto ttyACM0 Abierto Exitosamente |\n");
+			printf(" +-------------------------------------+ \n");
+			printf("int %d \n", sizeof(int));
+			printf("long int %d \n", sizeof(long int));
+			printf("unsigned int %d \n", sizeof(unsigned int));
+			printf("double %d \n", sizeof(double));
 		}
 		
 	config_port_read(fd);
@@ -50,9 +56,9 @@ int main(void){
 	
 	printf("\n +-------------------------------------+");
 	printf("\n |------Proyecto Informatica 2---------| \n");
-	printf("\n +-------------------------------------+");	
-	printf("Desea escribir en el puerto o escuchar? elija una opcion \n");
-	
+	printf(" +-------------------------------------+\n");	
+	printf("\n \nDesea escribir en el puerto o escuchar? elija una opcion \n");
+	 
 	/*int alto, bajo;
 	unsigned short int var=0;
 	alto= 0xAA;
@@ -63,12 +69,11 @@ int main(void){
 	
 	while(op!=3)
 		{
-		printf("\n1- escrbir \n2- escuchar \n3- Salir \n4- leer entero \n");
+		printf("\n1- escrbir caracter \n2- escuchar \n3- Salir \n4- leer entero \n5-Escribir Entero\n");
 		//printf("%d",sizeof(int));
 		scanf("%d", &op );
 		
-		if (op==1)
-			scanf(" %c",&caracter);
+		
 		if (op==2)
 			caracter='\0';
 		
@@ -93,6 +98,20 @@ int main(void){
 						printf("%d \n", entero);
 						}
 						break;
+				case 5:
+						scanf("%d", &n_enviado );
+						l=0;
+						while(n_enviado!=n_rec) //nviamos hasta que nos dan un eco correcto
+								{
+								write_port_int(n_enviado,fd);
+								n_rec = read_int(fd);
+								printf("%d\n", n_rec); //muestra los eos erroneos
+								l++;
+								}
+						
+						printf("numero recibido %d\n veces %d", n_rec, l);
+						break;
+						
 			}		
 	}			
 	close(fd); /* Close the serial port */
@@ -168,14 +187,6 @@ char read_char(int fd){
 			
 	//printf(" antes del read %d \n", var);
 	read(fd,&var,2);
-	//printf("dentro de la funcion read %d \n ", var);
-	/*int alto, bajo;
-	unsigned short int var=0;
-	alto= read_char(fd);
-	bajo= read_char(fd);
-	alto=alto << 8;
-	var=alto | bajo; */
-	
 	
 	return var;
 }
@@ -189,7 +200,23 @@ void write_port(char dato, int fd){
 									     /* "fd" - file descriptor pointing to the opened serial port */
 									     /*	"dato" - address of the buffer containing data    */
 									     /* "sizeof(write_buffer)" - No of bytes to write             */	
-	printf("\n  %c written to ttyUSB0",dato);
-	printf("\n  %d Bytes written to ttyUSB0", bytes_written);
-	printf("\n +----------------------------------+\n\n");
+	//printf("\n  %c written to ttyUSB0",dato);
+	//printf("\n  %d Bytes written to ttyUSB0", bytes_written);
+	//printf("\n +----------------------------------+\n\n");
 }
+
+void write_port_int(int numero, int fd){
+
+/*------------------------------- Write data to serial port -----------------------------*/
+
+	int  bytes_written  = 0;  	/* Value for storing the number of bytes written to the port */ 
+
+	bytes_written = write(fd,&numero,sizeof(numero));/* use write() to send data to port*/
+									     /* "fd" - file descriptor pointing to the opened serial port */
+									     /*	"dato" - address of the buffer containing data    */
+									     /* "sizeof(write_buffer)" - No of bytes to write             */	
+	//printf("\n  %c written to ttyUSB0",numero);
+	//printf("\n  %d Bytes written to ttyUSB0", bytes_written);
+	//printf("\n +----------------------------------+\n\n");
+}
+

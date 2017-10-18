@@ -18,6 +18,7 @@ int l; //para contar las veces que se lee
 int entero;
 int n_enviado=56;
 int n_rec=0;
+int q=1; //para enviar 1 en el check
 
 int feedrate=0;
 int rev_capa=0;
@@ -78,20 +79,22 @@ int main(void){
 				case 1:
 						l=0;
 						n_enviado=feedrate;
-						while(n_enviado!=1) //nviamos hasta que nos dan un eco correcto
+						while(n_rec!=n_enviado) //nviamos hasta que nos dan un eco correcto
 								{
 								write_port_int(n_enviado,fd);
 								n_rec = read_int(fd);
 								printf("%d\n", n_rec); //muestra los ecos erroneos
 								l++;
 								}
-						write_port_int(1,fd);
+						write_port_int(q,fd);
 						printf("numero recibido %d\n veces %d", n_rec, l);
 						op=2; //sigo con rev_capa
+						getchar();
 						break;
 						
 			}		
 	}			
+
 	close(fd); /* Close the serial port */
 
 	return 0;
