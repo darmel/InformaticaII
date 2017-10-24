@@ -73,10 +73,11 @@ int main(void){
 		scanf("%d", &feedrate );
 		scanf("%d", &rev_capa );
 		scanf("%d", &n_espiras);
-		op=1;
-		//switch(op)
-			//{
-				//case 1:
+		
+		
+		for(op=1 ; op<=3; op++){
+			switch(op){
+				case 1:
 						l=0;
 						n_enviado=feedrate;
 						printf("envio feed \n"); 
@@ -89,11 +90,11 @@ int main(void){
 								}
 						write_port_int(q,fd);
 						printf("numero recibido  feed rate %d\n veces %d", n_rec, l);
-						op=2; //sigo con rev_capa
+						//op=2; //sigo con rev_capa
 						//getchar();
-						//break;
+						break;
 				
-				/*//case 2:
+				case 2:
 						l=0;
 						n_enviado=rev_capa;
 						while(n_rec!=n_enviado) //nviamos hasta que nos dan un eco correcto
@@ -105,11 +106,11 @@ int main(void){
 								}
 						write_port_int(q,fd);
 						printf("numero recibido rev capa %d\n veces %d", n_rec, l);
-						op=3; //sigo con n espiras
+						//op=3; //sigo con n espiras
 						//getchar();
-						//break;
+						break;
 						
-				//case 3:
+				case 3:
 						l=0;
 						n_enviado=n_espiras;
 						while(n_rec!=n_enviado) //nviamos hasta que nos dan un eco correcto
@@ -121,11 +122,11 @@ int main(void){
 								}
 						write_port_int(q,fd);
 						printf("numero recibido n espiras %d\n veces %d", n_rec, l);
-						op=4; //salgo del loop de eviar
-						getchar();
-						//break;*/
-						
-			//}		
+						//op=4; //salgo del loop de eviar
+						//getchar();
+						break;
+			}			
+		}		
 	}			
 
 	close(fd); /* Close the serial port */
