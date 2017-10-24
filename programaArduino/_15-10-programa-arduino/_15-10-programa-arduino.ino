@@ -71,7 +71,15 @@ void serialEvent()
       {
        rec = (int)Serial.read(); 
       }
-  Serial.write(rec+4);
+    
+    
+    if(rec==1)
+       {
+        feedrate = (int)Serial.read(); 
+        rec=2;
+       }
+    
+  
   }
 
 /*----------funcion referenciar------------*/

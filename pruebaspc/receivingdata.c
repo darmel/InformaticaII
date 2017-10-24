@@ -66,7 +66,7 @@ int main(void){
 	printf("\n \ningreso de datos\n");
 	 
 		
-	while(op!=3)
+	while(feedrate!=5)
 		{
 		printf("\n1- Ingresar feedrate \n2- ingresar vueltas por capa \n3- total de vueltas\n");
 		
@@ -74,11 +74,12 @@ int main(void){
 		scanf("%d", &rev_capa );
 		scanf("%d", &n_espiras);
 		op=1;
-		switch(op)
-			{
-				case 1:
+		//switch(op)
+			//{
+				//case 1:
 						l=0;
 						n_enviado=feedrate;
+						printf("envio feed \n"); 
 						while(n_rec!=n_enviado) //nviamos hasta que nos dan un eco correcto
 								{
 								write_port_int(n_enviado,fd);
@@ -87,12 +88,44 @@ int main(void){
 								l++;
 								}
 						write_port_int(q,fd);
-						printf("numero recibido %d\n veces %d", n_rec, l);
+						printf("numero recibido  feed rate %d\n veces %d", n_rec, l);
 						op=2; //sigo con rev_capa
-						getchar();
-						break;
+						//getchar();
+						//break;
+				
+				/*//case 2:
+						l=0;
+						n_enviado=rev_capa;
+						while(n_rec!=n_enviado) //nviamos hasta que nos dan un eco correcto
+								{
+								write_port_int(n_enviado,fd);
+								n_rec = read_int(fd);
+								printf("%d\n", n_rec); //muestra los ecos erroneos
+								l++;
+								}
+						write_port_int(q,fd);
+						printf("numero recibido rev capa %d\n veces %d", n_rec, l);
+						op=3; //sigo con n espiras
+						//getchar();
+						//break;
 						
-			}		
+				//case 3:
+						l=0;
+						n_enviado=n_espiras;
+						while(n_rec!=n_enviado) //nviamos hasta que nos dan un eco correcto
+								{
+								write_port_int(n_enviado,fd);
+								n_rec = read_int(fd);
+								printf("%d\n", n_rec); //muestra los ecos erroneos
+								l++;
+								}
+						write_port_int(q,fd);
+						printf("numero recibido n espiras %d\n veces %d", n_rec, l);
+						op=4; //salgo del loop de eviar
+						getchar();
+						//break;*/
+						
+			//}		
 	}			
 
 	close(fd); /* Close the serial port */

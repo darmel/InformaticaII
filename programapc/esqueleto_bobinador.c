@@ -93,7 +93,8 @@ int main(){
 						printf("Enebre el alambre en el porta alambre\n");
 						do{
 							rep=0;
-							printf("\nLa maquina comienzara a bobinar, ¿Desea continuar?(S/n)"); scanf(" %c", &opc);
+							printf("\nLa maquina comienzara a bobinar, ¿Desea continuar?(S/n)"); 
+							scanf(" %c", &opc);
 							if((opc!='S') && (opc!='s') && (opc!='N') && (opc!='n')){
 								rep=1;
 								printf("Opcion no valida");
@@ -162,8 +163,8 @@ void bobinar(feedrate, retorno, N_pulsos){
 	}
 }
 
-int send_data(int feedrate,int retorno,int N_pulsos){
-
+int send_data(int feedrate,int retorno,int N_pulsos)
+{
 	return 0;//transmitio todo piola 
 }
 
