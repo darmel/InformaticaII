@@ -18,7 +18,7 @@
   int motor=9; //motor de carretel
   const int ledPin =  13;
   
-  int op=0; //opcion en el receving data
+  int op=1; //opcion en el receving data
   int q=1; //variable para enviar en el check, para enviar intiguer y no char
   
 void setup() {
@@ -59,21 +59,23 @@ void serialEvent()
         rec = (long int)Serial.read();
         if(rec==q)
             {
-              //switch (op)
-                //{
-                  //case 2:
-                    feedrate=check;
-                    //break;
-                  /*case 3:
-                    //rev_capa=check;
-                    break;
-                  case 4:
-                    n_espiras=check;
-                    break;
-                }*/
+            Serial.write(q);
+            switch (op){
+                   case 1:
+                   feedrate=check;
+                   break;
+                   case 2:
+                   rev_capa=check;
+                   break;
+                   case 3:
+                   n_espiras=check;
+                   break;
+                    }
+              
             Serial.write(q);
             digitalWrite(testled, HIGH);
-            op++;
+            op++; 
+            rec=9;
             }
           else
             {

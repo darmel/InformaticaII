@@ -76,6 +76,7 @@ int main(void){
 		
 		
 		for(op=1 ; op<=3; op++){
+			printf("op=  %d \n", op); 
 			switch(op){
 				case 1:
 						l=0;
@@ -89,9 +90,9 @@ int main(void){
 								l++;
 								}
 						write_port_int(q,fd);
-						printf("numero recibido  feed rate %d\n veces %d", n_rec, l);
+						printf("numero recibido  1- feed rate %d\n veces %d \n", n_rec, l);
 						//op=2; //sigo con rev_capa
-						//getchar();
+						getchar();
 						break;
 				
 				case 2:
@@ -105,9 +106,9 @@ int main(void){
 								l++;
 								}
 						write_port_int(q,fd);
-						printf("numero recibido rev capa %d\n veces %d", n_rec, l);
+						printf("numero recibido 2- rev capa %d\n veces %d \n", n_rec, l);
 						//op=3; //sigo con n espiras
-						//getchar();
+						getchar();
 						break;
 						
 				case 3:
@@ -121,9 +122,9 @@ int main(void){
 								l++;
 								}
 						write_port_int(q,fd);
-						printf("numero recibido n espiras %d\n veces %d", n_rec, l);
+						printf("numero recibido 3- n espiras %d\n veces %d \n", n_rec, l);
 						//op=4; //salgo del loop de eviar
-						//getchar();
+						getchar();
 						break;
 			}			
 		}		
