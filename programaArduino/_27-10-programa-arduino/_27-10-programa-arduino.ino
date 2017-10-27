@@ -92,7 +92,7 @@ void serialEvent()
         rec = (long int)Serial.read();
         if(rec==2)
           referenciar();
-        
+
             if(rec==q)
                 {
                 Serial.write(q);

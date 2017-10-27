@@ -6,9 +6,11 @@
   long int pulsos_rev; //cantidad de pulsos por revolucion
   long int rec=0; //variable para guardar lo que recibo
   long int check=0;
+ 
   int sentido = 4; //pin de control de motor PaP
   int clk = 7; //pin de clock para motor PaP
   int testled=13; //led onboard para pruebas
+  
   int n=0; // variable para pruebas
  
   long int contador=0;
@@ -31,7 +33,7 @@ void setup() {
   attachInterrupt( 0, encoder, FALLING); // configuramos la interrupcion como falling
   pinMode(fcarrera, INPUT);
   pinMode(testled, OUTPUT);
-  op=2;
+  op=0;
  
   while(n<5)
     {
@@ -82,9 +84,7 @@ void serialEvent()
               check=rec;
               Serial.write(check);
             }
-      }
-    
-
+      }    
   }
     
     
