@@ -91,7 +91,6 @@ int main(void){
 								}
 						write_port_int(q,fd);
 						printf("numero recibido  1- feed rate %d\n veces %d \n", n_rec, l);
-						//op=2; //sigo con rev_capa
 						getchar();
 						break;
 				
@@ -107,7 +106,6 @@ int main(void){
 								}
 						write_port_int(q,fd);
 						printf("numero recibido 2- rev capa %d\n veces %d \n", n_rec, l);
-						//op=3; //sigo con n espiras
 						getchar();
 						break;
 						
@@ -123,7 +121,6 @@ int main(void){
 								}
 						write_port_int(q,fd);
 						printf("numero recibido 3- n espiras %d\n veces %d \n", n_rec, l);
-						//op=4; //salgo del loop de eviar
 						getchar();
 						break;
 			}			

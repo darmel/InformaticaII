@@ -29,7 +29,7 @@
 
   int op=1; //opcion en el receving data
   int q=1; //variable para enviar en el check, para enviar intiguer y no char
-  int vel=75; //variable de velocidad
+  int vel=250; //variable de velocidad
   
 void setup() {
   // put your setup code here, to run once:
@@ -52,21 +52,23 @@ void setup() {
       n++;
     }
 
- delay(3000);
-digitalWrite(ledPin, HIGH);
-    
-fcarreraest = digitalRead(fcarrera); 
-
+  analogWrite(motor, vel);
 }
 
 void loop() 
 {
   // put your main code here, to run repeatedly:
 
+   fcarreraest = digitalRead(fcarrera);
+   // Serial.println(fcarreraest); //muestra el estado de fcarreraest. eliminar cuando todo funcione
     if(ref==0)
       {
         referenciar();      
       }
+
+
+    
+  
     
 }
 
@@ -76,16 +78,17 @@ void encoder() //funcion que suma uno a <<pulsos>> con cada falling en el pin 2
    {    
     contador++ ;
     pul_encod++ ;
-    if(contador>=feedrate)
+    if(contador==feedrate)
       {
         digitalWrite(clk, !digitalRead(clk));
-        contador=contador-feedrate;
+        contador=0;
       }
 
-    if(pul_encod>=266){ //acá hay que poner ca cantidad de pulsso que efectivamente de el encoder por revolucion
+    if(pul_encod>=500){ //acá hay que poner ca cantidad de pulsso que efectivamente de el encoder por revolucion
       rev++;
       rev_t++;
-      pul_encod=pul_encod-266;
+      pul_encod=0;
+      Serial.write("espira n:"); Serial.println(rev_t);
     }
         
     if(rev>=rev_capa){
@@ -93,10 +96,8 @@ void encoder() //funcion que suma uno a <<pulsos>> con cada falling en el pin 2
       rev=0;
         }
       
-    if(rev_t>=n_espiras){
+    if(rev_t>=n_espiras)
       analogWrite(motor, 0);
-      Serial.write(q);
-    }
      
    }
   
@@ -126,7 +127,6 @@ void serialEvent()
                        break;
                        case 3:
                        n_espiras=check;
-                       op=0;
                        break;
                         }
                   
@@ -147,17 +147,17 @@ void serialEvent()
 /*----------funcion referenciar------------*/
 void referenciar()
   {
-    fcarreraest = digitalRead(fcarrera); 
-    digitalWrite(sentido, HIGH);
-    while (fcarreraest==LOW)
+    Serial.println("referenciar");
+     Serial.println(fcarreraest);
+    while (fcarreraest==HIGH)
       {
-        digitalWrite(clk, !digitalRead(clk));
-        delay(5);
-        fcarreraest = digitalRead(fcarrera);    
+        digitalWrite(sentido, LOW);
+        fcarreraest = digitalRead(fcarrera);
+            
       }
-      
     ref=1;
-    digitalWrite(sentido, LOW);
+    digitalWrite(sentido, HIGH);
+    Serial.println("hecho");
   }
  
 
