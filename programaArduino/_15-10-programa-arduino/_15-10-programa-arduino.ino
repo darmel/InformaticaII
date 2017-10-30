@@ -22,7 +22,7 @@
 
   int op=1; //opcion en el receving data
   int q=1; //variable para enviar en el check, para enviar intiguer y no char
- 
+  int vel=100; //velocidad para el motor
   
 void setup() {
   // put your setup code here, to run once:
@@ -45,6 +45,7 @@ void setup() {
       n++;
     }
 
+  
 }
 
 void loop() 
@@ -58,16 +59,6 @@ void loop()
       {
         referenciar();      
       }
-
-
-    
-    if (n != contador) //muestra los pulsos del encoder
-            {     Serial.println(contador);
-                  n = contador ;
-            }
-  
-
-
     
 }
 

@@ -1,9 +1,16 @@
-  long int p_rev; //pulsos por revolucion
+ 
+  long int contador=0; //contador de pulsos para el feedrate
+  long int pul_encod=0; //contador de pulsos del encoder para las revolucion completa
+  long int rev=0; //variable para guardar las revoluciones/espiras por capa
+  long int rev_t=0; //variable para contar las revoluciones total
+  long int pulsos_rev; //cantidad de pulsos por revolucion. Definido
+
+  
+  
   long int rev_capa=5; // revoluciones por capa
-  long int n_espiras=500; //cantidad total de espiras
-  long int feedrate=100; //inicializado para referenciar
-  unsigned long pul_encod; //contador de pulsos del encoder para las revolucion completa
-  long int pulsos_rev; //cantidad de pulsos por revolucion
+  long int n_espiras=25; //cantidad total de espiras
+  long int feedrate=10; //inicializado para referenciar
+
   long int rec=0; //variable para guardar lo que recibo
   long int check=0;
   
@@ -15,14 +22,14 @@
   
   int n=0; // variable para pruebas
 
-  long int contador=0; //contador de pulsos para el feedrate
+  
   int ref=0; //guardo el estado de la referenciada
   int fcarrera = 8; //pin del final de carrera
   int fcarreraest = 0; //variable donde guardo el estado del final de carrera
 
   int op=1; //opcion en el receving data
   int q=1; //variable para enviar en el check, para enviar intiguer y no char
- 
+  int vel=250; //variable de velocidad
   
 void setup() {
   // put your setup code here, to run once:
@@ -45,29 +52,18 @@ void setup() {
       n++;
     }
 
+ 
+
 }
 
 void loop() 
 {
   // put your main code here, to run repeatedly:
 
-   delay(1000);
-   fcarreraest = digitalRead(fcarrera);
-   // Serial.println(fcarreraest); //muestra el estado de fcarreraest. eliminar cuando todo funcione
     if(ref==0)
       {
         referenciar();      
       }
-
-
-    
-    if (n != contador) //muestra los pulsos del encoder
-            {     Serial.println(contador);
-                  n = contador ;
-            }
-  
-
-
     
 }
 
@@ -83,8 +79,20 @@ void encoder() //funcion que suma uno a <<pulsos>> con cada falling en el pin 2
         contador=0;
       }
 
-    if(pul_encod==500) //acá hay que poner ca cantidad de pulsso que efectivamente de el encoder por revolucion
+    if(pul_encod>=500){ //acá hay que poner ca cantidad de pulsso que efectivamente de el encoder por revolucion
       rev++;
+      rev_t++;
+      pul_encod=0;
+      Serial.write("espira n:"); Serial.println(rev_t);
+    }
+        
+    if(rev>=rev_capa){
+      digitalWrite(sentido, !digitalRead(sentido));
+      rev=0;
+        }
+      
+    if(rev_t>=n_espiras)
+      analogWrite(motor, 0);
      
    }
   
@@ -97,6 +105,10 @@ void serialEvent()
         rec = (long int)Serial.read();
         if(rec==2)
           referenciar();
+          
+        if(rec==3)
+          analogWrite(motor, vel);
+          
         else{
             if(rec==q)
                 {
@@ -130,16 +142,18 @@ void serialEvent()
 /*----------funcion referenciar------------*/
 void referenciar()
   {
-    Serial.println("referenciar");
-     Serial.println(fcarreraest);
+    fcarreraest = digitalRead(fcarrera); 
+    digitalWrite(sentido, LOW);
     while (fcarreraest==HIGH)
       {
-        digitalWrite(sentido, LOW);
-        fcarreraest = digitalRead(fcarrera);
-            
+        digitalWrite(clk, !digitalRead(clk));
+        delay(50);
+        fcarreraest = digitalRead(fcarrera);    
       }
+      
     ref=1;
     digitalWrite(sentido, HIGH);
+    analogWrite(motor, vel);
   }
  
 
